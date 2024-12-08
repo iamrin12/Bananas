@@ -1,0 +1,81 @@
+GameName = "AV The Show!"
+tab1name = "Main"
+
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wizard"))()
+
+local GameName = Library:NewWindow(GameName)
+
+local Tab1 = GameName:NewSection(tab1name)
+
+-- Function to create a notification
+local function createNotification(title, text, duration)
+    local ScreenGui = Instance.new("ScreenGui")
+    local Frame = Instance.new("Frame")
+    local TitleLabel = Instance.new("TextLabel")
+    local TextLabel = Instance.new("TextLabel")
+    
+    -- Set up the ScreenGui
+    ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    
+    -- Frame properties
+    Frame.Parent = ScreenGui
+    Frame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    Frame.Size = UDim2.new(0, 300, 0, 100)
+    Frame.Position = UDim2.new(0.5, -150, 0.5, -50)
+    Frame.AnchorPoint = Vector2.new(0.5, 0.5)
+    Frame.BorderSizePixel = 0
+    
+    -- Title properties
+    TitleLabel.Parent = Frame
+    TitleLabel.Size = UDim2.new(1, 0, 0.4, 0)
+    TitleLabel.BackgroundTransparency = 1
+    TitleLabel.Text = title
+    TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TitleLabel.Font = Enum.Font.SourceSansBold
+    TitleLabel.TextSize = 20
+    
+    -- Text properties
+    TextLabel.Parent = Frame
+    TextLabel.Size = UDim2.new(1, 0, 0.6, 0)
+    TextLabel.Position = UDim2.new(0, 0, 0.4, 0)
+    TextLabel.BackgroundTransparency = 1
+    TextLabel.Text = text
+    TextLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+    TextLabel.Font = Enum.Font.SourceSans
+    TextLabel.TextSize = 16
+    TextLabel.TextWrapped = true
+    
+    -- Auto-destroy the notification after duration
+    game:GetService("Debris"):AddItem(ScreenGui, duration)
+end
+
+-- 100k Bananas Button
+Tab1:CreateButton("100k Bananas", function()
+    -- Show a warning notification before proceeding
+    createNotification("Note", "Don't spam too much bananas or you might get banned!", 5)
+    
+    -- Reference the RemoteEvent
+    local timeRewardEvent = game:GetService("ReplicatedStorage"):FindFirstChild("timeReward2")
+    
+    -- Check if the RemoteEvent exists and is callable
+    if timeRewardEvent and timeRewardEvent:IsA("RemoteEvent") then
+        -- Fire the event with parameters
+        timeRewardEvent:FireServer(100000, 1)
+        createNotification("Success!", "100k Bananas granted successfully!", 5)
+    else
+        -- Send error notification if the event is missing
+        createNotification("Error!", "The event 'timeReward2' was not found or is not a RemoteEvent.", 5)
+    end
+end)
+
+-- Discord Server Invite Button
+Tab1:CreateButton("Join our Discord", function()
+    -- Copy the Discord invite link to clipboard
+    setclipboard("https://discord.gg/FWP6m4fC")
+    
+    -- Send a notification to the player confirming the link was copied
+    createNotification("Discord Invite", "The invite link has been copied to your clipboard!", 5)
+end)
+
+local Tab2 = GameName:NewSection("Raizen")
